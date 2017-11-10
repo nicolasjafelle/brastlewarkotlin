@@ -60,7 +60,7 @@ abstract class AbstractAppCompatActivity : AppCompatActivity() {
     }
 
     protected fun getStatusBarHeight(): Int {
-        var result = 0;
+        var result = 0
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
             var resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
@@ -139,16 +139,7 @@ abstract class AbstractAppCompatActivity : AppCompatActivity() {
 
     protected fun popBackStack() = supportFragmentManager.popBackStackImmediate()
 
-    protected fun getBaseLayoutResId() = R.layout.activity_single_fragment
-
-
-//    public void replaceFragment(Fragment newFragment, boolean addToBackStack) {
-//        this.replaceFragment(newFragment, addToBackStack, R.anim.fragment_fade_in, R.anim.fragment_fade_in);
-//    }
-//
-//    public void replaceFragment(Fragment newFragment, @AnimRes int enterAnim, @AnimRes int exitAnim) {
-//        this.replaceFragment(newFragment, true, enterAnim, exitAnim);
-//    }
+    open protected fun getBaseLayoutResId() = R.layout.activity_scroll_single_fragment
 
     public fun replaceFragment(newFragment: Fragment,
                                addToBackStack: Boolean = true,
@@ -182,7 +173,7 @@ abstract class AbstractAppCompatActivity : AppCompatActivity() {
         if (enterAnim > 0 && exitAnim > 0) {
             fragmentTransaction.setCustomAnimations(enterAnim, exitAnim, enterAnim, exitAnim)
         } else {
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_NONE);
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_NONE)
             fragmentTransaction.setCustomAnimations(R.anim.fragment_fade_in, popEnterAnim, R.anim.fragment_fade_in, popExitAnim)
         }
 
