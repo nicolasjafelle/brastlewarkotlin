@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by nicolas on 11/9/17.
  */
-class MainPresenter: BasePresenter<MainView>() {
+class MainPresenter : BasePresenter<MainView>() {
 
     private val MIN_LENGHT = 2
 
@@ -86,12 +86,11 @@ class MainPresenter: BasePresenter<MainView>() {
     }
 
 
-
     private fun filterByCitizenName(name: String): List<Citizen> {
-        val filteredList =  ArrayList<Citizen>(0)
+        val filteredList = ArrayList<Citizen>(0)
 
         response?.citizenList?.forEach { citizen ->
-            if(citizen.name.toLowerCase().contains(name.toLowerCase())) {
+            if (citizen.name.toLowerCase().contains(name.toLowerCase())) {
                 filteredList.add(citizen)
             }
         }

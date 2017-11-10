@@ -17,21 +17,21 @@ abstract class RestHttpObserver<T>(currentPresenter: BasePresenter<out RestHttpV
 
     override fun onError(throwable: Throwable?) {
 
-        when(throwable) {
+        when (throwable) {
             is HttpException -> {
                 try {
                     val response = throwable.response()?.errorBody()?.string()
                     val errorCode = throwable.code()
                     onHttpErrorCode(errorCode, response)
 
-                }catch (exc: Exception) {
+                } catch (exc: Exception) {
                     exc.printStackTrace()
                     onUnknownError(exc)
                 }
             }
             is UnknownHostException -> onHostUnreachable()
             else -> {
-                if(throwable != null) {
+                if (throwable != null) {
                     onUnknownError(throwable)
                     throwable.printStackTrace()
                 }
@@ -42,22 +42,22 @@ abstract class RestHttpObserver<T>(currentPresenter: BasePresenter<out RestHttpV
 
     private fun onUnknownError(e: Throwable) {
 //        if (presenter != null) {
-            presenter.mvpView?.onError(e)
-            presenter.setCurrentState(ViewState.State.ERROR)
+        presenter.mvpView?.onError(e)
+        presenter.setCurrentState(ViewState.State.ERROR)
 //        }
     }
 
     private fun onHostUnreachable() {
 //        if (presenter != null) {
-            presenter.mvpView?.onHostUnreachable()
-            presenter.setCurrentState(ViewState.State.ERROR)
+        presenter.mvpView?.onHostUnreachable()
+        presenter.setCurrentState(ViewState.State.ERROR)
 //        }
     }
 
     private fun onHttpErrorCode(errorCode: Int, response: String?) {
 //        if (presenter != null) {
-            presenter.mvpView?.onHttpErrorCode(errorCode, response)
-            presenter.setCurrentState(ViewState.State.ERROR)
+        presenter.mvpView?.onHttpErrorCode(errorCode, response)
+        presenter.setCurrentState(ViewState.State.ERROR)
 //        }
     }
 

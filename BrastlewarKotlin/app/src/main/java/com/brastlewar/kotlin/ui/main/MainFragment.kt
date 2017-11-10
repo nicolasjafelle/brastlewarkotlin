@@ -1,6 +1,8 @@
 package com.brastlewar.kotlin.ui.main
 
 import android.os.Bundle
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -9,27 +11,22 @@ import com.brastlewar.kotlin.R
 import com.brastlewar.kotlin.api.response.PopulationResponse
 import com.brastlewar.kotlin.domain.Citizen
 import com.brastlewar.kotlin.ui.AbstractFragment
+import com.brastlewar.kotlin.ui.view.CitizenItemView
 import com.brastlewar.kotlin.ui.view.LoadingView
+import com.brastlewar.kotlin.utils.SpacesItemDecoration
 
 /**
  * Created by nicolas on 11/10/17.
  */
-class MainFragment : AbstractFragment<MainFragment.Callback>(), MainView, LoadingView.Callback {
+class MainFragment : AbstractFragment<MainFragment.Callback>(), MainView {
 
     private lateinit var loadingView: LoadingView
 
     private var presenter: MainPresenter = MainPresenter()
 
     private var recyclerView: RecyclerView? = null
-//
-//
-//    private LoadingView loadingView;
-//
-//    @Inject
-//    private MainPresenter presenter;
-//
-//    private RecyclerView recyclerView;
-//    private CitizenAdapter adapter;
+
+    private lateinit var adapter: CitizenAdapter
 
 
     companion object {
@@ -59,8 +56,44 @@ class MainFragment : AbstractFragment<MainFragment.Callback>(), MainView, Loadin
         super.onViewCreated(view, savedInstanceState)
 
         loadingView = LoadingView(context)
-        loadingView.attach(view as ViewGroup, show = true, callback = this)
+        loadingView.attach(view as ViewGroup, show = true, onClickAction = {
+            fetchData()
+        })
         loadingView.setThemeBackgroundColor()
+
+        setupRecyclerView()
+
+        if (presenter.isIdle()) {
+            fetchData()
+        } else if (presenter.isFinished()) {
+            if (presenter.filteredList != null) {
+                onSearchResult(presenter.filteredList)
+            } else {
+                onGetData(presenter.response)
+            }
+
+        } else if (presenter.isLoading()) {
+            loadingView.show()
+        } else if (presenter.hasFailed()) {
+            loadingView.showErrorView()
+        }
+    }
+
+    private fun setupRecyclerView() {
+
+        recyclerView?.let {
+            it.setHasFixedSize(true)
+            it.isNestedScrollingEnabled = false
+            it.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.span_count))
+            it.itemAnimator = DefaultItemAnimator()
+            it.addItemDecoration(SpacesItemDecoration(resources.getInteger(R.integer.span_count), 40))
+
+            adapter = CitizenAdapter {
+                val view = recyclerView?.findViewHolderForLayoutPosition(it)?.itemView as CitizenItemView
+                this@MainFragment.callback?.onItemSelect(adapter.getItemAt(it)!!, view.imageView)
+            }
+            it.adapter = adapter
+        }
     }
 
     override fun onDestroy() {
@@ -68,27 +101,38 @@ class MainFragment : AbstractFragment<MainFragment.Callback>(), MainView, Loadin
         presenter.detachMvpView()
     }
 
-    override fun onRetryClick() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun fetchData() {
+        loadingView.show()
+        presenter.getPopulationList()
     }
 
     override fun onError(throwable: Throwable) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        loadingView.showErrorView()
     }
 
     override fun onHostUnreachable() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        loadingView.showErrorView()
     }
 
     override fun onHttpErrorCode(errorCode: Int, message: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        loadingView.showErrorView(getString(R.string.problem_while_connecting, errorCode, message))
     }
 
-    override fun onGetData(response: PopulationResponse) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onGetData(response: PopulationResponse?) {
+        if (response != null) {
+            loadingView.dismiss(true)
+            adapter.addList(response.citizenList)
+        } else {
+            loadingView.showNoContentView()
+        }
     }
 
     override fun onSearchResult(filteredList: List<Citizen>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (filteredList != null && !filteredList.isEmpty()) {
+            loadingView.dismiss(true)
+            adapter.addList(filteredList)
+        } else {
+            loadingView.showLabel(R.string.no_matches)
+        }
     }
 }

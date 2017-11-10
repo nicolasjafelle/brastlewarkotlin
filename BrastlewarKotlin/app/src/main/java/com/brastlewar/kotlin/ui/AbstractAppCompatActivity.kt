@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.support.annotation.*
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -19,7 +18,7 @@ import com.brastlewar.kotlin.R
 /**
  * Created by nicolas on 11/7/17.
  */
-abstract class AbstractAppCompatActivity: AppCompatActivity() {
+abstract class AbstractAppCompatActivity : AppCompatActivity() {
 
     protected var toolbar: Toolbar? = null
 
@@ -54,7 +53,7 @@ abstract class AbstractAppCompatActivity: AppCompatActivity() {
     }
 
     protected fun setTranslucentStatusBar() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
         }
@@ -95,7 +94,7 @@ abstract class AbstractAppCompatActivity: AppCompatActivity() {
     protected fun setStatusBarTransparent() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             with(window) {
-                this.decorView.systemUiVisibility =  View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                this.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 //IN JAVA
 //                this.decorView.systemUiVisibility =  View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 this.statusBarColor = Color.TRANSPARENT
@@ -104,7 +103,7 @@ abstract class AbstractAppCompatActivity: AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
+        when (item?.itemId) {
             android.R.id.home -> {
                 onBackPressed()
                 return true
@@ -115,7 +114,7 @@ abstract class AbstractAppCompatActivity: AppCompatActivity() {
 
     protected abstract fun setInitialFragment()
 
-    protected fun setInitialFragment(fragment: Fragment, @LayoutRes layoutResId: Int = getBaselayoutResId(),
+    protected fun setInitialFragment(fragment: Fragment, @LayoutRes layoutResId: Int = getBaseLayoutResId(),
                                      @IdRes viewId: Int = R.id.fragment_container) {
         setContentView(layoutResId)
         mainLayout = findViewById(viewId)
@@ -125,7 +124,7 @@ abstract class AbstractAppCompatActivity: AppCompatActivity() {
 
 
     protected fun setInitialFragment(view: View?, fragment: Fragment) {
-        if(getCurrentFragment() == null) {
+        if (getCurrentFragment() == null) {
             val transaction = supportFragmentManager.beginTransaction()
             if (view != null) {
                 transaction.add(view.id, fragment).commit()
@@ -140,8 +139,7 @@ abstract class AbstractAppCompatActivity: AppCompatActivity() {
 
     protected fun popBackStack() = supportFragmentManager.popBackStackImmediate()
 
-    protected fun getBaselayoutResId() = R.layout.activity_scroll_single_fragment
-
+    protected fun getBaseLayoutResId() = R.layout.activity_single_fragment
 
 
 //    public void replaceFragment(Fragment newFragment, boolean addToBackStack) {
@@ -160,7 +158,7 @@ abstract class AbstractAppCompatActivity: AppCompatActivity() {
                                @AnimRes popExitAnim: Int = 0) {
 
         var fragmentTransaction = supportFragmentManager.beginTransaction()
-        if(addToBackStack) {
+        if (addToBackStack) {
             fragmentTransaction.addToBackStack("replace")
         }
 
@@ -177,13 +175,13 @@ abstract class AbstractAppCompatActivity: AppCompatActivity() {
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()
 
-        if(addToBackStack) {
+        if (addToBackStack) {
             fragmentTransaction.addToBackStack("add_and_hide")
         }
 
         if (enterAnim > 0 && exitAnim > 0) {
             fragmentTransaction.setCustomAnimations(enterAnim, exitAnim, enterAnim, exitAnim)
-        }else {
+        } else {
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_NONE);
             fragmentTransaction.setCustomAnimations(R.anim.fragment_fade_in, popEnterAnim, R.anim.fragment_fade_in, popExitAnim)
         }

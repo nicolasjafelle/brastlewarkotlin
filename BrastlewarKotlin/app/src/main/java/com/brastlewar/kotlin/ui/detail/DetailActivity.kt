@@ -2,7 +2,6 @@ package com.brastlewar.kotlin.ui.detail
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
-import com.brastlewar.kotlin.api.Endpoints
 
 /**
  * Created by nicolas on 11/7/17.

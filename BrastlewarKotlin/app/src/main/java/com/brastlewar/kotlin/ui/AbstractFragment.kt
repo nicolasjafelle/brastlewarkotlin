@@ -10,7 +10,7 @@ import android.view.ViewGroup
 /**
  * Created by nicolas on 11/8/17.
  */
-abstract class AbstractFragment<T>: Fragment() {
+abstract class AbstractFragment<T> : Fragment() {
 
 
     protected var callback: T? = null

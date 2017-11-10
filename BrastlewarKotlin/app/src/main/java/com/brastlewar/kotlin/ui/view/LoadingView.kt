@@ -16,7 +16,7 @@ import com.brastlewar.kotlin.R
 /**
  * Created by nicolas on 11/10/17.
  */
-class LoadingView : FrameLayout, View.OnClickListener {
+class LoadingView : FrameLayout {
 
     private var progressBar: ProgressBar
 
@@ -26,7 +26,6 @@ class LoadingView : FrameLayout, View.OnClickListener {
 
     private var retryButton: Button
 
-    var callback: Callback? = null
 
     var mainContentView: ViewGroup? = null
 
@@ -35,9 +34,6 @@ class LoadingView : FrameLayout, View.OnClickListener {
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    interface Callback {
-        fun onRetryClick()
-    }
 
     init {
         View.inflate(context, R.layout.loading_view, this)
@@ -55,11 +51,10 @@ class LoadingView : FrameLayout, View.OnClickListener {
         progressBar.indeterminateDrawable.setColorFilter(fetchThemeColor(), android.graphics.PorterDuff.Mode.SRC_ATOP)
         setBackgroundResource(android.R.color.transparent)
 
-        retryButton.setOnClickListener(this)
     }
 
 
-    private fun fetchThemeColor() : Int {
+    private fun fetchThemeColor(): Int {
         val typedValue = TypedValue()
 
         val typedArray = context.obtainStyledAttributes(typedValue.data, intArrayOf(R.attr.colorAccent))
@@ -91,17 +86,17 @@ class LoadingView : FrameLayout, View.OnClickListener {
      * @param fullHeight      - Compute Full Screen Height or just the rootView's height
      */
     fun attach(rootView: ViewGroup,
-                       mainContentView: ViewGroup? = null,
-                       show: Boolean = true,
-                       fullHeight: Boolean = true,
-                       callback: Callback? = null) {
+               mainContentView: ViewGroup? = null,
+               show: Boolean = true,
+               fullHeight: Boolean = true,
+               onClickAction: () -> Unit) {
 
         if (mainContentView != null) {
             this.mainContentView = mainContentView
         }
 
         val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                                    ViewGroup.LayoutParams.MATCH_PARENT)
+                ViewGroup.LayoutParams.MATCH_PARENT)
 
         if (rootView is RelativeLayout || rootView is FrameLayout) {
             rootView.addView(this, layoutParams)
@@ -120,14 +115,15 @@ class LoadingView : FrameLayout, View.OnClickListener {
             dismiss()
         }
 
-        this.callback = callback
+        retryButton.setOnClickListener {
+            show()
+            onClickAction()
+        }
     }
-
-
 
     private fun computeFullHeight() {
 
-        viewTreeObserver.addOnPreDrawListener( object : ViewTreeObserver.OnPreDrawListener{
+        viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
 
             override fun onPreDraw(): Boolean {
                 val screenHeight = Resources.getSystem().displayMetrics.heightPixels
@@ -165,6 +161,7 @@ class LoadingView : FrameLayout, View.OnClickListener {
         mainContentView?.visibility = View.GONE
     }
 
+
     fun showErrorView(errorMessage: String) {
         textView.text = errorMessage
         retryButton.setText(R.string.retry)
@@ -174,12 +171,11 @@ class LoadingView : FrameLayout, View.OnClickListener {
         mainContentView?.visibility = View.GONE
     }
 
-    fun showErrorView(@StringRes errorMessage: Int) {
+    fun showErrorView(@StringRes errorMessage: Int = R.string.connection_error_try_again) {
         showErrorView(resources.getString(errorMessage))
     }
 
-
-    fun showNoContentView(@StringRes stringResId: Int) {
+    fun showNoContentView(@StringRes stringResId: Int = R.string.no_content) {
         visibility = View.VISIBLE
         textView.setText(stringResId)
         retryButton.setText(R.string.refresh)
@@ -218,8 +214,5 @@ class LoadingView : FrameLayout, View.OnClickListener {
         dismiss(mainContentView != null)
     }
 
-    override fun onClick(view: View?) {
-        show()
-        callback?.onRetryClick()
-    }
 }
+

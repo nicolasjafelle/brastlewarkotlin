@@ -7,9 +7,9 @@ import com.brastlewar.kotlin.mvp.RestHttpView
 /**
  * Created by nicolas on 11/9/17.
  */
-interface MainView: RestHttpView {
+interface MainView : RestHttpView {
 
-    fun onGetData(response: PopulationResponse)
+    fun onGetData(response: PopulationResponse?)
 
     fun onSearchResult(filteredList: List<Citizen>?)
 

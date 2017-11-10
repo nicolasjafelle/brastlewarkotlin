@@ -1,6 +1,5 @@
 package com.brastlewar.kotlin.extensions
 
-import android.support.annotation.StringRes
 import android.support.v7.app.AppCompatActivity
 
 /**

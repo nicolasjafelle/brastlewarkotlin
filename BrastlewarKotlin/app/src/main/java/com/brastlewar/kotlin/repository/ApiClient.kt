@@ -8,6 +8,7 @@ import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -38,6 +39,7 @@ class ApiClient private constructor() {
             retrofit = Retrofit.Builder()
                     .baseUrl(BuildConfig::HOST.get())
                     .client(getOkHttpClient())
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 
@@ -78,7 +80,7 @@ class ApiClient private constructor() {
             return client
         }
 
-        private fun getCache() : Cache {
+        private fun getCache(): Cache {
             val file = File(BrastlewarkApplication.instance.cacheDir, "cache")
             return Cache(file, DISK_CACHE_SIZE)
         }
@@ -87,10 +89,6 @@ class ApiClient private constructor() {
 
 
 //    fun populationResponse() = ApiClient.instance.populationResponse()
-
-
-
-
 
 
 }

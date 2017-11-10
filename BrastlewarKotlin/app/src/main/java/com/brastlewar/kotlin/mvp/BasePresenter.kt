@@ -16,39 +16,42 @@ open class BasePresenter<T : MvpView> : Presenter<T> {
 
     override fun attachMvpView(mvpView: T) {
         this.mvpView = mvpView
-        this.compositeSubscription = CompositeSubscription()
+        compositeSubscription = CompositeSubscription()
         viewState = ViewState()
     }
 
     override fun detachMvpView() {
-        this.mvpView = null
+        mvpView = null
 
-        if (this.compositeSubscription != null) {
-            this.compositeSubscription?.clear()
-            this.compositeSubscription?.unsubscribe()
+        if (compositeSubscription != null) {
+            compositeSubscription?.clear()
+            compositeSubscription?.unsubscribe()
         }
     }
 
-    fun isViewAttached() = this.mvpView != null
+    fun isViewAttached() = mvpView != null
 
 
     fun setCurrentState(newState: ViewState.State) {
-        this.viewState.currentState = newState
+        viewState.currentState = newState
     }
 
-    fun isIdle() = this.viewState.currentState != ViewState.State.FINISH &&
-            this.viewState.currentState == ViewState.State.IDLE
-
-    fun isFinished() = this.viewState.currentState !== ViewState.State.ERROR &&
-            this.viewState.currentState !== ViewState.State.IDLE &&
-            this.viewState.currentState !== ViewState.State.LOADING &&
-            this.viewState.currentState === ViewState.State.FINISH
+    fun isLoading() = viewState.currentState === ViewState.State.LOADING
 
 
-    fun hasFailed() = this.viewState.currentState !== ViewState.State.FINISH &&
-                this.viewState.currentState !== ViewState.State.IDLE &&
-                this.viewState.currentState !== ViewState.State.LOADING &&
-                this.viewState.currentState === ViewState.State.ERROR
+    fun isIdle() = viewState.currentState != ViewState.State.FINISH &&
+            viewState.currentState == ViewState.State.IDLE
+
+    fun isFinished() = viewState.currentState !== ViewState.State.ERROR &&
+            viewState.currentState !== ViewState.State.IDLE &&
+            viewState.currentState !== ViewState.State.LOADING &&
+            viewState.currentState === ViewState.State.FINISH
+
+
+    fun hasFailed() = viewState.currentState !== ViewState.State.FINISH &&
+            viewState.currentState !== ViewState.State.IDLE &&
+            viewState.currentState !== ViewState.State.LOADING &&
+            viewState.currentState === ViewState.State.ERROR
 
 
 }

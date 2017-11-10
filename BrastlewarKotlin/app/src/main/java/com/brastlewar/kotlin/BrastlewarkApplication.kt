@@ -11,6 +11,7 @@ class BrastlewarkApplication : Application() {
         lateinit var instance: BrastlewarkApplication
 
     }
+
     override fun onCreate() {
         super.onCreate()
         instance = this
