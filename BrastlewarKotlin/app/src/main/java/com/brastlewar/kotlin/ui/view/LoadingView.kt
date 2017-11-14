@@ -130,10 +130,10 @@ class LoadingView : FrameLayout {
                 var statusBarHeight = 0
                 val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
                 if (resourceId > 0) {
-                    statusBarHeight = resources.getDimensionPixelSize(resourceId);
+                    statusBarHeight = resources.getDimensionPixelSize(resourceId)
                 }
 
-                var actionBarHeight = 0;
+                var actionBarHeight = 0
                 val tv = TypedValue()
                 if (context.theme.resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
                     actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, resources.displayMetrics)

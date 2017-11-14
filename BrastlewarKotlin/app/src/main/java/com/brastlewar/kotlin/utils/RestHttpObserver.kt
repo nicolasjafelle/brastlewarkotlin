@@ -10,10 +10,10 @@ import java.net.UnknownHostException
 /**
  * Created by nicolas on 11/9/17.
  */
-abstract class RestHttpObserver<T>(currentPresenter: BasePresenter<out RestHttpView>) : Observer<T> {
+abstract class RestHttpObserver<T>(val presenter: BasePresenter<out RestHttpView>) : Observer<T> {
 
 
-    private var presenter: BasePresenter<out RestHttpView> = currentPresenter
+//    private var presenter: BasePresenter<out RestHttpView> = currentPresenter
 
     override fun onError(throwable: Throwable?) {
 

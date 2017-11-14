@@ -102,6 +102,11 @@ abstract class AbstractAppCompatActivity : AppCompatActivity() {
         }
     }
 
+    protected fun setToolbarColor(@ColorRes colorRes: Int) {
+        toolbar?.setBackgroundResource(android.R.color.transparent)
+    }
+
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
