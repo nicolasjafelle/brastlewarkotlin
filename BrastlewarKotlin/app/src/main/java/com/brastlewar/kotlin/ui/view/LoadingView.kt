@@ -89,7 +89,7 @@ class LoadingView : FrameLayout {
                mainContentView: ViewGroup? = null,
                show: Boolean = true,
                fullHeight: Boolean = true,
-               onClickAction: () -> Unit) {
+               onRetryAction: () -> Unit) {
 
         if (mainContentView != null) {
             this.mainContentView = mainContentView
@@ -117,7 +117,7 @@ class LoadingView : FrameLayout {
 
         retryButton.setOnClickListener {
             show()
-            onClickAction()
+            onRetryAction()
         }
     }
 

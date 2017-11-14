@@ -57,7 +57,7 @@ class MainFragment : AbstractFragment<MainFragment.Callback>(), MainView {
         super.onViewCreated(view, savedInstanceState)
 
         loadingView = LoadingView(context)
-        loadingView.attach(view as ViewGroup, show = true, onClickAction = {
+        loadingView.attach(view as ViewGroup, show = false, onRetryAction = {
             fetchData()
         })
         loadingView.setThemeBackgroundColor()

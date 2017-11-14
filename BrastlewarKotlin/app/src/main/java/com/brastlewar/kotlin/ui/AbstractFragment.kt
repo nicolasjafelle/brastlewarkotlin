@@ -22,7 +22,7 @@ abstract class AbstractFragment<T> : Fragment() {
         setHasOptionsMenu(true)
         retainInstance = true
 
-//        BrastlewarkApplication.injectMembers(this);
+//        BrastlewarkApplication.injectMembers(this)
     }
 
     override fun onAttach(context: Context?) {

@@ -98,7 +98,6 @@ class MainActivity : AbstractAppCompatActivity(), MainFragment.Callback {
 
 
     override fun onItemSelect(citizen: Citizen, view: View) {
-//        Toast.makeText(this, "${citizen.name} | ${citizen.age}", Toast.LENGTH_SHORT).show()
         DetailActivity.launchActivity(this, citizen, view)
 
     }
