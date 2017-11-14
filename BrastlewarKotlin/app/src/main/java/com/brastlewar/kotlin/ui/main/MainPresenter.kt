@@ -77,7 +77,7 @@ class MainPresenter : BasePresenter<MainView>() {
 
                     override fun onNext(citizenList: List<Citizen>?) {
                         setCurrentState(ViewState.State.FINISH)
-                        this@MainPresenter.filteredList = filteredList
+                        this@MainPresenter.filteredList = citizenList
                         mvpView?.onSearchResult(filteredList)
                     }
                 })

@@ -1,5 +1,7 @@
 package com.brastlewar.kotlin.extensions
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
@@ -8,6 +10,7 @@ import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.Window
+import android.view.inputmethod.InputMethodManager
 
 /**
  * Created by nicolas on 11/8/17.
@@ -42,6 +45,26 @@ fun AppCompatActivity.launchSceneTransitionAnimation(intent: Intent, view: View?
     }
 
     ActivityCompat.startActivity(this, intent, options.toBundle())
+}
+
+fun AppCompatActivity.hideSoftKeyboard(activity: Activity) {
+    val imm = activity.getSystemService(
+            Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+    val currentFocus = activity.currentFocus
+    if (currentFocus != null) {
+        imm.hideSoftInputFromWindow(currentFocus.windowToken, 0)
+    }
+}
+
+fun AppCompatActivity.showSoftKeyboard(activity: Activity) {
+    val imm = activity.getSystemService(
+            Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+    val currentFocus = activity.currentFocus
+    if (currentFocus != null) {
+        imm.showSoftInput(currentFocus, 0)
+    }
 }
 
 

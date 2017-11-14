@@ -5,6 +5,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.brastlewar.kotlin.R
@@ -94,6 +95,21 @@ class MainFragment : AbstractFragment<MainFragment.Callback>(), MainView {
             }
             it.adapter = adapter
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == R.id.action_show_all) {
+            loadingView.show()
+            presenter.showAll()
+            true
+        } else {
+            super.onOptionsItemSelected(item)
+        }
+    }
+
+    fun performSearch(textToSearch: String) {
+        loadingView.show()
+        presenter.searchCitizen(textToSearch)
     }
 
     override fun onDestroy() {
