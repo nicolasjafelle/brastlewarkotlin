@@ -1,7 +1,9 @@
 package com.brastlewar.kotlin.extensions
 
+import android.support.v4.app.ActivityCompat
 import android.widget.ImageView
 import com.brastlewar.kotlin.R
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
 /**
@@ -17,4 +19,19 @@ fun ImageView.loadImage(url: String) {
             .error(R.drawable.ic_image_black)
             .placeholder(R.drawable.ic_image_black)
             .into(this)
+}
+
+fun ImageView.loadImage(url: String, downloaded: () -> Unit) {
+
+    val creator = Picasso.with(context).load(url).fit().centerCrop()
+
+    creator.into(this, object : Callback {
+        override fun onSuccess() {
+            downloaded()
+        }
+
+        override fun onError() {
+            downloaded()
+        }
+    })
 }

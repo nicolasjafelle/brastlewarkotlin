@@ -10,6 +10,7 @@ import android.widget.ImageView
 import com.brastlewar.kotlin.R
 import com.brastlewar.kotlin.domain.Citizen
 import com.brastlewar.kotlin.extensions.launchSceneTransitionAnimation
+import com.brastlewar.kotlin.extensions.loadImage
 import com.brastlewar.kotlin.ui.AbstractAppCompatActivity
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -49,19 +50,10 @@ class DetailActivity : AbstractAppCompatActivity() {
         if (intent.extras != null) {
             val citizen = Parcels.unwrap<Citizen>(intent.extras.getParcelable(DetailFragment.SELECTED_CITIZEN))
 
-            val creator = Picasso.with(this).load(citizen.thumbnail).fit().centerCrop()
-
-            creator.into(imageView, object : Callback {
-                override fun onSuccess() {
-                    ActivityCompat.startPostponedEnterTransition(this@DetailActivity)
-                }
-
-                override fun onError() {
-                    ActivityCompat.startPostponedEnterTransition(this@DetailActivity)
-                }
+            imageView.loadImage(citizen.thumbnail, {
+                ActivityCompat.startPostponedEnterTransition(this@DetailActivity)
             })
         }
-
     }
 
     private fun setupToolbar() {
