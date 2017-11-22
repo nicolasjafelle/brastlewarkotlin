@@ -28,8 +28,6 @@ class ApiClient private constructor() {
 
         private lateinit var retrofit: Retrofit
 
-//        private var apiService: ApiService? = null
-
         private lateinit var okHttpDownloader: OkHttp3Downloader
 
         //        @Inject
@@ -39,27 +37,13 @@ class ApiClient private constructor() {
             retrofit = Retrofit.Builder()
                     .baseUrl(BuildConfig::HOST.get())
                     .client(getOkHttpClient())
-//                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 
             retrofit.create(ApiService::class.java)
         }
 
-
-//        fun getInstance() : ApiService {
-//
-//            if(apiService == null && retrofit == null) {
-//                retrofit = Retrofit.Builder()
-//                        .baseUrl(BuildConfig::HOST.get())
-//                        .client(getOkHttpClient())
-//                        .addConverterFactory(GsonConverterFactory.create())
-//                        .build()
-//
-//                apiService = retrofit!!.create(ApiService::class.java)
-//            }
-//            return apiService!!
-//        }
 
         private fun getOkHttpClient(): OkHttpClient {
 
@@ -86,9 +70,6 @@ class ApiClient private constructor() {
         }
 
     }
-
-
-//    fun populationResponse() = ApiClient.instance.populationResponse()
 
 
 }

@@ -6,9 +6,6 @@ import com.brastlewar.kotlin.mvp.BasePresenter
 import com.brastlewar.kotlin.mvp.ViewState
 import com.brastlewar.kotlin.repository.Repository
 import com.brastlewar.kotlin.utils.RestHttpObserver
-import kotlinx.coroutines.experimental.*
-import kotlinx.coroutines.experimental.android.UI
-import org.jetbrains.anko.coroutines.experimental.bg
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -31,44 +28,25 @@ class MainPresenter : BasePresenter<MainView>() {
         Repository()
     }
 
-
-    fun getPopulationList() {
-        async(UI) {
-            try {
-                setCurrentState(ViewState.State.LOADING)
-
-                val background = bg { repository.populationResponse().execute().body() }
-                response = background.await()
-
-                mvpView?.onGetData(response)
-                setCurrentState(ViewState.State.FINISH)
-            }catch (e: Exception) {
-                e.printStackTrace()
-                mvpView?.onError(e)
-            }
-        }
-
-    }
-
     //RX IMPLEMENTATION
-//    fun getPopulationList() {
-//        setCurrentState(ViewState.State.LOADING)
-//
-//        val subscription = repository.populationResponse()
-//                .delay(1000, TimeUnit.MILLISECONDS) //just to simulate a big transaction...
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(object : RestHttpObserver<PopulationResponse>(this) {
-//
-//                    override fun onNext(response: PopulationResponse) {
-//                        setCurrentState(ViewState.State.FINISH)
-//                        this@MainPresenter.response = response
-//                        mvpView?.onGetData(response)
-//                    }
-//                })
-//
-//        super.compositeSubscription?.add(subscription)
-//    }
+    fun getPopulationList() {
+        setCurrentState(ViewState.State.LOADING)
+
+        val subscription = repository.populationResponse()
+                .delay(1000, TimeUnit.MILLISECONDS) //just to simulate a big transaction...
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : RestHttpObserver<PopulationResponse>(this) {
+
+                    override fun onNext(response: PopulationResponse) {
+                        setCurrentState(ViewState.State.FINISH)
+                        this@MainPresenter.response = response
+                        mvpView?.onGetData(response)
+                    }
+                })
+
+        super.compositeSubscription?.add(subscription)
+    }
 
 
     fun showAll() {
@@ -79,60 +57,32 @@ class MainPresenter : BasePresenter<MainView>() {
 
 
     fun searchCitizen(textToSearch: String) {
-        async(UI) {
-            try {
-                setCurrentState(ViewState.State.LOADING)
+        setCurrentState(ViewState.State.LOADING)
 
-                val background = bg {
-
-                    lastQuery = textToSearch
-                    if (lastQuery!!.length <= MIN_LENGHT) {
-                        response?.citizenList
+        val subscription = Observable.just(textToSearch)
+                .subscribeOn(Schedulers.io())
+                .debounce(500, TimeUnit.MILLISECONDS)
+                .flatMap { search ->
+                    lastQuery = search
+                    if (search.length <= MIN_LENGHT) {
+                        Observable.just(response?.citizenList)
                     } else {
-                        filterByCitizenName(lastQuery!!)
+                        val filteredList = filterByCitizenName(search)
+                        Observable.just(filteredList)
                     }
                 }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : RestHttpObserver<List<Citizen>?>(this) {
 
-                filteredList = background.await()
-                mvpView?.onSearchResult(filteredList)
-                setCurrentState(ViewState.State.FINISH)
-            }catch (e: Exception) {
-                e.printStackTrace()
-                mvpView?.onError(e)
-            }
+                    override fun onNext(citizenList: List<Citizen>?) {
+                        setCurrentState(ViewState.State.FINISH)
+                        this@MainPresenter.filteredList = citizenList
+                        mvpView?.onSearchResult(filteredList)
+                    }
+                })
 
-        }
-
+        super.compositeSubscription?.add(subscription)
     }
-
-
-//    fun searchCitizen(textToSearch: String) {
-//        setCurrentState(ViewState.State.LOADING)
-//
-//        val subscription = Observable.just(textToSearch)
-//                .subscribeOn(Schedulers.io())
-//                .debounce(500, TimeUnit.MILLISECONDS)
-//                .flatMap { search ->
-//                    lastQuery = search
-//                    if (search.length <= MIN_LENGHT) {
-//                        Observable.just(response?.citizenList)
-//                    } else {
-//                        val filteredList = filterByCitizenName(search)
-//                        Observable.just(filteredList)
-//                    }
-//                }
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(object : RestHttpObserver<List<Citizen>?>(this) {
-//
-//                    override fun onNext(citizenList: List<Citizen>?) {
-//                        setCurrentState(ViewState.State.FINISH)
-//                        this@MainPresenter.filteredList = citizenList
-//                        mvpView?.onSearchResult(filteredList)
-//                    }
-//                })
-//
-//        super.compositeSubscription?.add(subscription)
-//    }
 
 
     private fun filterByCitizenName(name: String): List<Citizen> {
