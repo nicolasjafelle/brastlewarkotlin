@@ -39,7 +39,7 @@ class ApiClient private constructor() {
             retrofit = Retrofit.Builder()
                     .baseUrl(BuildConfig::HOST.get())
                     .client(getOkHttpClient())
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 

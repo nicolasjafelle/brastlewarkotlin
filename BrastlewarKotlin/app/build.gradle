@@ -16,6 +16,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         buildTypes {
             debug {
@@ -33,6 +34,8 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    compile 'org.jetbrains.anko:anko-coroutines:0.10.1'
 
     // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
     // Apparently with Java 1.8 support we need to add this library for Android 16 to 19... ¯\_(ツ)_/¯

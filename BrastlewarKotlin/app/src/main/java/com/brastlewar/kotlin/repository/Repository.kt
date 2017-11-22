@@ -8,5 +8,5 @@ class Repository {
 
 //    lateinit var apiClient: ApiClient
 
-    public fun populationResponse() = ApiClient.instance.populationResponse()
+    fun populationResponse() = ApiClient.instance.populationResponse()
 }

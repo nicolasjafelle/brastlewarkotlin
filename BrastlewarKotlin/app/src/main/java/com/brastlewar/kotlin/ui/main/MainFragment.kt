@@ -89,6 +89,7 @@ class MainFragment : AbstractFragment<MainFragment.Callback>(), MainView {
             it.itemAnimator = DefaultItemAnimator()
             it.addItemDecoration(SpacesItemDecoration(resources.getInteger(R.integer.span_count), 40))
 
+
             adapter = CitizenAdapter {
                 val view = recyclerView?.findViewHolderForLayoutPosition(it)?.itemView as CitizenItemView
                 this@MainFragment.callback?.onItemSelect(adapter.getItemAt(it)!!, view.imageView)

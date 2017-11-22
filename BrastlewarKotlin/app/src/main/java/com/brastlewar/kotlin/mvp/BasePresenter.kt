@@ -10,23 +10,23 @@ open class BasePresenter<T : MvpView> : Presenter<T> {
 
     var mvpView: T? = null
 
-    protected var compositeSubscription: CompositeSubscription? = null
+//    protected var compositeSubscription: CompositeSubscription? = null
 
     protected lateinit var viewState: ViewState
 
     override fun attachMvpView(mvpView: T) {
         this.mvpView = mvpView
-        compositeSubscription = CompositeSubscription()
+//        compositeSubscription = CompositeSubscription()
         viewState = ViewState()
     }
 
     override fun detachMvpView() {
         mvpView = null
 
-        if (compositeSubscription != null) {
-            compositeSubscription?.clear()
-            compositeSubscription?.unsubscribe()
-        }
+//        if (compositeSubscription != null) {
+//            compositeSubscription?.clear()
+//            compositeSubscription?.unsubscribe()
+//        }
     }
 
     fun isViewAttached() = mvpView != null

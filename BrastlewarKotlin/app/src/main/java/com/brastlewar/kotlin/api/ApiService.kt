@@ -1,6 +1,7 @@
 package com.brastlewar.kotlin.api
 
 import com.brastlewar.kotlin.api.response.PopulationResponse
+import retrofit2.Call
 import retrofit2.http.GET
 import rx.Observable
 
@@ -10,5 +11,6 @@ import rx.Observable
 interface ApiService {
 
     @GET(Endpoints.DATA)
-    fun populationResponse(): Observable<PopulationResponse>
+    fun populationResponse(): Call<PopulationResponse>
+//    fun populationResponse(): Observable<PopulationResponse>
 }
