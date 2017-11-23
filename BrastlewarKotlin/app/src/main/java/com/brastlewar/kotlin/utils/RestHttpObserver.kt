@@ -7,13 +7,10 @@ import retrofit2.HttpException
 import rx.Observer
 import java.net.UnknownHostException
 
-/**
- * Created by nicolas on 11/9/17.
- */
-abstract class RestHttpObserver<T>(val presenter: BasePresenter<out RestHttpView>) : Observer<T> {
 
+@Deprecated("THIS CLASS NEEDS TO BE MIGRATED TO USE WITH KOTLIN COROUTINES")
+abstract class RestHttpObserver<T>(private val presenter: BasePresenter<out RestHttpView>) : Observer<T> {
 
-//    private var presenter: BasePresenter<out RestHttpView> = currentPresenter
 
     override fun onError(throwable: Throwable?) {
 
@@ -41,24 +38,18 @@ abstract class RestHttpObserver<T>(val presenter: BasePresenter<out RestHttpView
     }
 
     private fun onUnknownError(e: Throwable) {
-//        if (presenter != null) {
         presenter.mvpView?.onError(e)
         presenter.setCurrentState(ViewState.State.ERROR)
-//        }
     }
 
     private fun onHostUnreachable() {
-//        if (presenter != null) {
         presenter.mvpView?.onHostUnreachable()
         presenter.setCurrentState(ViewState.State.ERROR)
-//        }
     }
 
     private fun onHttpErrorCode(errorCode: Int, response: String?) {
-//        if (presenter != null) {
         presenter.mvpView?.onHttpErrorCode(errorCode, response)
         presenter.setCurrentState(ViewState.State.ERROR)
-//        }
     }
 
     override fun onCompleted() {
