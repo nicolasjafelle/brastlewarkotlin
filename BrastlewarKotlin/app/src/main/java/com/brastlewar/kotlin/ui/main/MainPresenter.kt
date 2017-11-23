@@ -5,8 +5,8 @@ import com.brastlewar.kotlin.domain.Citizen
 import com.brastlewar.kotlin.mvp.BasePresenter
 import com.brastlewar.kotlin.mvp.ViewState
 import com.brastlewar.kotlin.repository.Repository
-import kotlinx.coroutines.experimental.*
 import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.coroutines.experimental.asReference
 import org.jetbrains.anko.coroutines.experimental.bg
 
@@ -35,15 +35,15 @@ class MainPresenter : BasePresenter<MainView>() {
             try {
                 ref().setCurrentState(ViewState.State.LOADING)
                 val background = bg {
-                    Thread.sleep(5000)
-                    repository.populationResponse().execute().body() }
-
-                ref().apply {
-                    this.response = background.await()
-                    this.mvpView?.onGetData(this.response)
-                    this.setCurrentState(ViewState.State.FINISH)
+                    repository.populationResponse().execute().body()
                 }
-            }catch (e: Exception) {
+
+                ref().let {
+                    it.response = background.await()
+                    it.mvpView?.onGetData(it.response)
+                    it.setCurrentState(ViewState.State.FINISH)
+                }
+            } catch (e: Exception) {
                 e.printStackTrace()
                 mvpView?.onError(e)
             }
@@ -73,13 +73,12 @@ class MainPresenter : BasePresenter<MainView>() {
                     }
                 }
 
-                ref().apply {
-                    this.filteredList = background.await()
-                    this.mvpView?.onSearchResult(this.filteredList)
-                    this.setCurrentState(ViewState.State.FINISH)
+                ref().let {
+                    it.filteredList = background.await()
+                    it.mvpView?.onSearchResult(it.filteredList)
+                    it.setCurrentState(ViewState.State.FINISH)
                 }
-
-            }catch (e: Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
                 mvpView?.onError(e)
             }

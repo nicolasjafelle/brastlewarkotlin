@@ -3,7 +3,6 @@ package com.brastlewar.kotlin.api
 import com.brastlewar.kotlin.api.response.PopulationResponse
 import retrofit2.Call
 import retrofit2.http.GET
-import rx.Observable
 
 /**
  * Created by nicolas on 11/9/17.

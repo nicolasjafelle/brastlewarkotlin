@@ -12,8 +12,6 @@ import com.brastlewar.kotlin.domain.Citizen
 import com.brastlewar.kotlin.extensions.launchSceneTransitionAnimation
 import com.brastlewar.kotlin.extensions.loadImage
 import com.brastlewar.kotlin.ui.AbstractAppCompatActivity
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
 import org.parceler.Parcels
 
 /**

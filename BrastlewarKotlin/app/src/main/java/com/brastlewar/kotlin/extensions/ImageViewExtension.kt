@@ -1,6 +1,5 @@
 package com.brastlewar.kotlin.extensions
 
-import android.support.v4.app.ActivityCompat
 import android.widget.ImageView
 import com.brastlewar.kotlin.R
 import com.squareup.picasso.Callback

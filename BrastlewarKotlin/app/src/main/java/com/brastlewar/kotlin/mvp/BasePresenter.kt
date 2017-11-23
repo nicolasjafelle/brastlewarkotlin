@@ -1,8 +1,5 @@
 package com.brastlewar.kotlin.mvp
 
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.cancelFutureOnCompletion
-
 /**
  * Created by nicolas on 11/9/17.
  */
