@@ -5,6 +5,7 @@ import com.brastlewar.kotlin.domain.Citizen
 import com.brastlewar.kotlin.mvp.BasePresenter
 import com.brastlewar.kotlin.mvp.ViewState
 import com.brastlewar.kotlin.repository.Repository
+import com.brastlewar.kotlin.utils.RestHttpExceptionHandler
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.coroutines.experimental.asReference
@@ -23,14 +24,33 @@ class MainPresenter : BasePresenter<MainView>() {
 
     var lastQuery: String? = null
 
+//    val job = Job()
+
     val repository: Repository by lazy {
         Repository()
     }
 
 
     fun getPopulationList() {
+//        launch(UI + job) {
+//
+//            try {
+//                val background = async(CommonPool, CoroutineStart.LAZY) {
+//                    repository.populationResponse().execute().body()
+//                }
+//
+//                response = background.await()
+//                mvpView?.onGetData(response)
+//                setCurrentState(ViewState.State.FINISH)
+//
+//            }catch (e: Exception) {
+//                RestHttpExceptionHandler().handle(UI, e, this@MainPresenter)
+//            }
+//        }
+
         val ref = asReference()
 
+//        async(UI + job) {
         async(UI) {
             try {
                 ref().setCurrentState(ViewState.State.LOADING)
@@ -44,8 +64,7 @@ class MainPresenter : BasePresenter<MainView>() {
                     it.setCurrentState(ViewState.State.FINISH)
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
-                mvpView?.onError(e)
+                RestHttpExceptionHandler().handle(UI, e, ref())
             }
         }
     }
@@ -80,7 +99,7 @@ class MainPresenter : BasePresenter<MainView>() {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                mvpView?.onError(e)
+                ref().mvpView?.onError(e)
             }
         }
     }

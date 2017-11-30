@@ -3,7 +3,7 @@
 buildscript {
     ext.kotlin_version = '1.2.0'
 
-    ext.support_version = "27.0.1"
+    ext.support_version = "27.0.2"
     ext.retrofit_version = "2.3.0"
     ext.okhttp_version = "3.9.0"
     repositories {
