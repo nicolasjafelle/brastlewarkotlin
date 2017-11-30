@@ -84,12 +84,18 @@ class MainPresenter : BasePresenter<MainView>() {
                 setCurrentState(ViewState.State.LOADING)
 
                 val background = bg {
+                    val citizenList: List<Citizen>
                     lastQuery = textToSearch
+
                     if (lastQuery!!.length <= MIN_LENGHT) {
-                        response?.citizenList
+                        citizenList = response?.citizenList!!
+//                        return@bg response?.citizenList!!
                     } else {
-                        filterByCitizenName(lastQuery!!)
+                        citizenList = filterByCitizenName(lastQuery!!)
+//                        return@bg filterByCitizenName(lastQuery!!)
                     }
+
+                    return@bg citizenList //just to know how to implicit return the value
                 }
 
                 ref().let {
