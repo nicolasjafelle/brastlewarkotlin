@@ -5,7 +5,7 @@
         <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
 
-    <style name="AppTheme" parent="Base.AppTheme"/>
+    <style name="AppTheme" parent="Base.AppTheme" />
 
     <style name="Base.AppTheme" parent="AppCompatTheme">
         <item name="colorPrimary">@color/colorPrimary</item>

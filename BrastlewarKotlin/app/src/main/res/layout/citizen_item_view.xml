@@ -2,8 +2,7 @@
 <merge>
 
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -13,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="130dp"
             android:background="@android:color/darker_gray"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/citizen_item_view_fullname"
@@ -21,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/base_separation"
             android:textSize="@dimen/large_text"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/citizen_item_view_age"
@@ -29,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/base_separation"
             android:layout_marginLeft="@dimen/base_separation"
-            android:layout_marginRight="@dimen/base_separation"/>
+            android:layout_marginRight="@dimen/base_separation" />
     </LinearLayout>
 
 </merge>

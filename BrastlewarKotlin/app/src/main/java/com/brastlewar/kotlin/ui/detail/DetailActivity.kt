@@ -12,7 +12,6 @@ import com.brastlewar.kotlin.domain.Citizen
 import com.brastlewar.kotlin.extensions.launchSceneTransitionAnimation
 import com.brastlewar.kotlin.extensions.loadImage
 import com.brastlewar.kotlin.ui.AbstractAppCompatActivity
-import org.parceler.Parcels
 
 /**
  * Created by nicolas on 11/7/17.
@@ -25,7 +24,7 @@ class DetailActivity : AbstractAppCompatActivity() {
         fun launchActivity(activity: AppCompatActivity, citizen: Citizen, transitionView: View?) {
 
             val intent = Intent(activity, DetailActivity::class.java)
-            intent.putExtra(DetailFragment.SELECTED_CITIZEN, Parcels.wrap(citizen))
+            intent.putExtra(DetailFragment.SELECTED_CITIZEN, citizen)
             activity.launchSceneTransitionAnimation(intent, transitionView)
         }
     }
@@ -46,7 +45,7 @@ class DetailActivity : AbstractAppCompatActivity() {
         imageView = findViewById(R.id.activity_collapse_single_fragment_image)
 
         if (intent.extras != null) {
-            val citizen = Parcels.unwrap<Citizen>(intent.extras.getParcelable(DetailFragment.SELECTED_CITIZEN))
+            val citizen = intent.extras.getParcelable<Citizen>(DetailFragment.SELECTED_CITIZEN)
 
             imageView.loadImage(citizen.thumbnail, {
                 ActivityCompat.startPostponedEnterTransition(this@DetailActivity)

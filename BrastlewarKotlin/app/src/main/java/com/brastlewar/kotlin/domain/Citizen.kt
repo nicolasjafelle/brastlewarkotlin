@@ -1,12 +1,16 @@
 package com.brastlewar.kotlin.domain
 
+import android.annotation.SuppressLint
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import org.parceler.Parcel
+import kotlinx.android.parcel.Parcelize
+
 
 /**
  * Created by nicolas on 11/9/17.
  */
-@Parcel
+@SuppressLint("ParcelCreator")
+@Parcelize
 data class Citizen(val id: Long,
                    val name: String,
                    val thumbnail: String,
@@ -14,8 +18,7 @@ data class Citizen(val id: Long,
                    val weight: Double,
                    val height: Double,
                    @SerializedName("professions") val professionList: List<String>,
-                   @SerializedName("friends") val friendList: List<String>) {
+                   @SerializedName("friends") val friendList: List<String>) : Parcelable {
 
-    constructor() : this(0, "", "", 0, 0.0, 0.0, ArrayList<String>(), ArrayList<String>()) //for parceler library...
 }
 

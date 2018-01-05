@@ -14,7 +14,6 @@ import android.widget.TextView
 import com.brastlewar.kotlin.R
 import com.brastlewar.kotlin.domain.Citizen
 import com.brastlewar.kotlin.ui.AbstractFragment
-import org.parceler.Parcels
 
 /**
  * Created by nicolas on 11/14/17.
@@ -48,15 +47,15 @@ class DetailFragment : AbstractFragment<Unit>() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)!!
 
-        rootLinear = view.findViewById(R.id.fragment_detail_linear);
-        secondLinear = view.findViewById(R.id.fragment_detail_second_linear);
-        friendRecyclerView = view.findViewById(R.id.fragment_detail_friend_recycler);
-        professionRecyclerView = view.findViewById(R.id.fragment_detail_profession_recycler);
-        ageView = view.findViewById(R.id.fragment_detail_age);
-        weightView = view.findViewById(R.id.fragment_detail_weight);
-        heightView = view.findViewById(R.id.fragment_detail_height);
-        friendsLabel = view.findViewById(R.id.fragment_detail_friends_label);
-        professionLabel = view.findViewById(R.id.fragment_detail_profession_label);
+        rootLinear = view.findViewById(R.id.fragment_detail_linear)
+        secondLinear = view.findViewById(R.id.fragment_detail_second_linear)
+        friendRecyclerView = view.findViewById(R.id.fragment_detail_friend_recycler)
+        professionRecyclerView = view.findViewById(R.id.fragment_detail_profession_recycler)
+        ageView = view.findViewById(R.id.fragment_detail_age)
+        weightView = view.findViewById(R.id.fragment_detail_weight)
+        heightView = view.findViewById(R.id.fragment_detail_height)
+        friendsLabel = view.findViewById(R.id.fragment_detail_friends_label)
+        professionLabel = view.findViewById(R.id.fragment_detail_profession_label)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             rootLinear.isTransitionGroup = false
@@ -69,14 +68,17 @@ class DetailFragment : AbstractFragment<Unit>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val citizen = Parcels.unwrap<Citizen>(arguments?.getParcelable(SELECTED_CITIZEN))
+        val citizen = arguments?.getParcelable<Citizen>(SELECTED_CITIZEN)
 
-        ageView.text = resources.getString(R.string.age_years_old, citizen.age)
-        weightView.text = resources.getString(R.string.weight, citizen.weight)
-        heightView.text = resources.getString(R.string.height, citizen.height)
+        citizen?.let {
+            ageView.text = resources.getString(R.string.age_years_old, citizen.age)
+            weightView.text = resources.getString(R.string.weight, citizen.weight)
+            heightView.text = resources.getString(R.string.height, citizen.height)
 
-        showOrNotRecycler(friendRecyclerView, friendsLabel, citizen.friendList, R.string.no_friends);
-        showOrNotRecycler(professionRecyclerView, professionLabel, citizen.professionList, R.string.no_profession);
+            showOrNotRecycler(friendRecyclerView, friendsLabel, citizen.friendList, R.string.no_friends);
+            showOrNotRecycler(professionRecyclerView, professionLabel, citizen.professionList, R.string.no_profession)
+        }
+
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView, stringList: List<String>) {

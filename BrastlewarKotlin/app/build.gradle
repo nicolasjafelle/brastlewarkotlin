@@ -30,13 +30,17 @@ android {
             }
         }
     }
+
+    androidExtensions {
+        experimental = true
+    }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
-    compile 'org.jetbrains.anko:anko-coroutines:0.10.3'
+    compile 'org.jetbrains.anko:anko-coroutines:0.10.4'
 
     // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
     // Apparently with Java 1.8 support we need to add this library for Android 16 to 19... ¯\_(ツ)_/¯
@@ -71,8 +75,9 @@ dependencies {
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
 
     // Parceler
-    compile 'org.parceler:parceler-api:1.1.6'
-    kapt 'org.parceler:parceler:1.1.6'
+//    compile 'org.parceler:parceler-api:1.1.6'
+//    kapt 'org.parceler:parceler:1.1.6'
 
+    compile 'org.jetbrains.anko:anko:0.10.4'
 
 }
